@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -204,6 +204,78 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+
+-- Powershell Terminal Change Windows
+-- Check if 'pwsh' is executable and set the shell accordingly
+if vim.fn.executable 'pwsh' == 1 then
+  vim.o.shell = 'pwsh'
+else
+  vim.o.shell = 'powershell'
+end
+
+-- Setting shell command flags
+vim.o.shellcmdflag =
+  "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
+
+-- Setting shell redirection
+vim.o.shellredir = '2>&1 | %{ "$_" } | Out-File %s; exit $LastExitCode'
+
+-- Setting shell pipe
+vim.o.shellpipe = '2>&1 | %{ "$_" } | Tee-Object %s; exit $LastExitCode'
+
+-- Setting shell quote options
+vim.o.shellquote = ''
+vim.o.shellxquote = ''
+--
+-- My original way
+--
+-- local powershell_options = {
+--   shell = vim.fn.executable 'pwsh' == 1 and 'pwsh' or 'powershell',
+--   shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;',
+--   shellredir = '-RedirectStandardOutput %s -NoNewWindow -Wait',
+--   shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode',
+--   shellquote = '',
+--   shellxquote = '',
+-- }
+--
+-- for option, value in pairs(powershell_options) do
+--   vim.opt[option] = value
+-- end
+-- My original way END
+
+-- Custom Keymaps
+--
+-- Neo-tree maps
+vim.keymap.set('n', '<leader>e', '<Cmd>Neotree toggle<CR>')
+-- ToggleTerm maps
+-- vim.keymap.set('n', '<leader>t', '<Cmd>TermExec cmd="powershell" <CR>')
+vim.keymap.set('n', '<leader>t', '<Cmd> ToggleTerm <CR>')
+
+function _G.set_terminal_keymaps()
+  local opts = { buffer = 0 }
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+  vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+end
+
+vim.keymap.set('n', '<leader>cxx', function()
+  local filename = vim.fs.basename(vim.fn.expand '%:r')
+  local flags = '-Wall -Werror -Weffc++ -Wextra -Wconversion -Wsign-conversion --std=c++20'
+  vim.cmd('TermExec cmd="g++ ' .. flags .. ' ' .. filename .. '.cpp -o ' .. filename .. '.exe ;./' .. filename .. '.exe"')
+end)
+
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd 'autocmd! TermOpen term://* lua set_terminal_keymaps()'
+
+-- Executing python file in terminal
+vim.keymap.set('n', '<leader>py', function()
+  local filename = vim.fs.basename(vim.fn.expand '%:r')
+  vim.cmd('TermExec cmd="py ' .. filename .. '.py"')
+end)
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -973,18 +1045,18 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
