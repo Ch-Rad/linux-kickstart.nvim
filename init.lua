@@ -277,6 +277,16 @@ vim.keymap.set('n', '<leader>py', function()
   vim.cmd('TermExec cmd="py ' .. filename .. '.py"')
 end)
 
+-- Executing lua file in terminal
+-- vim.keymap.set('n', '<leader>lua', function()
+--   local filename = vim.fs.basename(vim.fn.expand '%:r')
+--   vim.cmd('TermExec cmd ="lua5.1 ' .. filename .. '.lua"')
+-- end)
+vim.keymap.set('n', '<leader>l', function()
+  local filename = vim.fs.basename(vim.fn.expand '%:r')
+  vim.cmd('TermExec cmd="lua5.1 ' .. filename .. '.lua"')
+end)
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
