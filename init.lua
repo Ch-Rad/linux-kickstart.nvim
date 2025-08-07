@@ -287,6 +287,11 @@ vim.keymap.set('n', '<leader>l', function()
   vim.cmd('TermExec cmd="lua5.1 ' .. filename .. '.lua"')
 end)
 
+-- Busted Lua Shortcut
+vim.keymap.set('n', '<leader>lb', function()
+  vim.cmd('TermExec cmd="C:\\msys64\\mingw64\\bin\\busted.bat .\\' .. vim.fs.basename(vim.fn.expand '%:r') .. '_spec.lua"') 
+end)
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
