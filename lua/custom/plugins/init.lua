@@ -4,14 +4,14 @@
 -- See the kickstart.nvim README for more information
 return {
 
-  {
-    'akinsho/toggleterm.nvim',
-    version = 'v1.*',
-    opts = {},
-    config = function()
-      require('toggleterm').setup {}
-    end,
-  },
+  -- {
+  --   'akinsho/toggleterm.nvim',
+  --   version = 'v1.*',
+  --   opts = {},
+  --   config = function()
+  --     require('toggleterm').setup {}
+  --   end,
+  -- },
   {
     'rebelot/kanagawa.nvim',
     config = function()
