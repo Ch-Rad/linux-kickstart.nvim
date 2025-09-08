@@ -14,6 +14,9 @@ local function run_file_in_terminal()
   local filename_no_ext = vim.fn.expand '%:t:r' -- file name without extension
   local file_dir = vim.fn.expand '%:p:h' -- directory of current file
 
+  --CPP Flags
+  local flags = '-Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -Werror -std=c++23'
+
   -- Map file extensions to run commands
   local commands = {
     py = 'python3',
@@ -21,7 +24,7 @@ local function run_file_in_terminal()
     js = 'node',
     ts = 'ts-node',
     sh = 'bash',
-    cpp = 'g++ "' .. file .. '" -o /tmp/a.out && /tmp/a.out',
+    cpp = 'g++ ' .. flags .. ' "' .. file .. '" -o ./' .. filename_no_ext .. '.exe && ./' .. filename_no_ext .. '.exe',
     c = 'gcc "' .. file .. '" -o /tmp/a.out && /tmp/a.out',
     go = 'go run',
     rb = 'ruby',
