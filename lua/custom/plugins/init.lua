@@ -107,4 +107,47 @@ return {
       { '<leader>vs', '<cmd>LoveStop<cr>', ft = 'lua', desc = 'Stop LÖVE' },
     },
   },
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+    },
+    config = function()
+      require('mason').setup()
+      require('mason-lspconfig').setup {
+        -- List of servers to ensure installed by Mason
+        ensure_installed = { 'clangd' },
+        handlers = {
+          -- Default handler for all servers managed by mason-lspconfig
+          function(server_name)
+            require('lspconfig')[server_name].setup {}
+          end,
+          -- Specific configuration for clangd
+          clangd = function()
+            require('lspconfig').clangd.setup {
+              init_options = {
+                fallbackFlags = {
+                  '-std=c++23',
+                },
+              },
+              -- You can add specific clangd options here
+              -- For example, to specify compilation database location:
+              -- root_dir = require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt"),
+              capabilities = require('cmp_nvim_lsp').default_capabilities(),
+              -- Additional settings for clangd
+              settings = {
+                -- Example: to include system headers
+                clangd = {
+                  arguments = {
+                    '--query-driver=/usr/bin/gcc', -- Or your specific compiler
+                  },
+                },
+              },
+            }
+          end,
+        },
+      }
+    end,
+  },
 }
