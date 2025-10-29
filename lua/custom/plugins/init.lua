@@ -13,6 +13,14 @@ return {
   --   end,
   -- },
   {
+    'vidocqh/data-viewer.nvim',
+    opts = {},
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'kkharji/sqlite.lua', -- Optional, sqlite support
+    },
+  },
+  {
     'rebelot/kanagawa.nvim',
     config = function()
       require('kanagawa').load 'dragon'
