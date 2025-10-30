@@ -12,14 +12,14 @@ return {
   --     require('toggleterm').setup {}
   --   end,
   -- },
-  {
-    'vidocqh/data-viewer.nvim',
-    opts = {},
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'kkharji/sqlite.lua', -- Optional, sqlite support
-    },
-  },
+  -- {
+  --   'vidocqh/data-viewer.nvim',
+  --   opts = {},
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'kkharji/sqlite.lua', -- Optional, sqlite support
+  --   },
+  -- },
   {
     'rebelot/kanagawa.nvim',
     config = function()
