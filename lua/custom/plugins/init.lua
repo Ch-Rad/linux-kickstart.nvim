@@ -20,6 +20,8 @@ return {
   --     'kkharji/sqlite.lua', -- Optional, sqlite support
   --   },
   -- },
+  'tpope/vim-dadbod',
+  'kristijanhusak/vim-dadbod-ui',
   {
     'rebelot/kanagawa.nvim',
     config = function()
