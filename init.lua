@@ -462,6 +462,8 @@ require('lazy').setup({
       }
 
       -- Enable Telescope extensions if they are installed
+      pcall(require('telescope').load_extension, 'projects')
+      require('telescope').extensions.projects.projects {}
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 

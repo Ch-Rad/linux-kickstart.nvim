@@ -20,6 +20,20 @@ return {
   --     'kkharji/sqlite.lua', -- Optional, sqlite support
   --   },
   -- },
+  {
+    'ahmedkhalf/project.nvim',
+    config = function()
+      require('project_nvim').setup {}
+      -- require('nvim-tree').setup {
+      --   sync_root_with_cwd = true,
+      --   respect_buf_cwd = true,
+      --   update_focused_file = {
+      --     enable = true,
+      --     update_root = true,
+      --   },
+      -- }
+    end,
+  },
   'tpope/vim-dadbod',
   'kristijanhusak/vim-dadbod-ui',
   { 'neoclide/coc.nvim', branch = 'release' },

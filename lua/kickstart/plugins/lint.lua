@@ -5,17 +5,47 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
+      require('lint').debug = true
+
+      local function project_root()
+        local markers = { 'CMakeLists.txt', 'compile_commands.json', '.git' }
+        local path = vim.api.nvim_buf_get_name(0)
+        local found = vim.fs.find(markers, { upward = true, path = path })[1]
+        if not found then
+          return nil
+        end
+        return vim.fs.dirname(found)
+      end
+
+      local root = project_root()
 
       lint.linters.cppcheck = {
         cmd = 'cppcheck',
         stdin = false,
         args = {
-          '--enable=all',
-          '--project=build/compile_commands.json',
-          '--quiet',
+          '--enable=warning,style,performance,information',
+          -- '--project=build/compile_commands.json',
           '--language=c++',
+          -- function()
+          --   if vim.fn.isdirectory 'build' == 1 then
+          --     return '--cppcheck-build-dir=build'
+          --   else
+          --     return ''
+          --   end
+          -- end,
+          -- function()
+          --   if vim.fn.isdirectory 'build' == 1 then
+          --     return '--project=build/compile_commands.json'
+          --   else
+          --     return ''
+          --   end
+          -- end,
+          '--force',
+          '--template={file}:{line}:{column}: [{id}] {severity}: {message}',
+          '--quiet',
           '--template=gcc',
         },
+        cwd = root,
         stream = 'stderr',
         ignore_exitcode = true,
         parser = require('lint.parser').from_errorformat('%f:%l:%c: %t%*[^:]: %m', { source = 'cppcheck' }),
