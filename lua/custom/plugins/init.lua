@@ -22,6 +22,7 @@ return {
   -- },
   'tpope/vim-dadbod',
   'kristijanhusak/vim-dadbod-ui',
+  { 'neoclide/coc.nvim', branch = 'release' },
   {
     'rebelot/kanagawa.nvim',
     config = function()

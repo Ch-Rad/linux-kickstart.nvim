@@ -5,8 +5,26 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
+
+      lint.linters.cppcheck = {
+        cmd = 'cppcheck',
+        stdin = false,
+        args = {
+          '--enable=all',
+          '--project=build/compile_commands.json',
+          '--quiet',
+          '--language=c++',
+          '--template=gcc',
+        },
+        stream = 'stderr',
+        ignore_exitcode = true,
+        parser = require('lint.parser').from_errorformat('%f:%l:%c: %t%*[^:]: %m', { source = 'cppcheck' }),
+      }
+
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
+        c = { 'cppcheck' },
+        cpp = { 'cppcheck' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
