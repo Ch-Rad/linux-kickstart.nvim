@@ -7,6 +7,25 @@ return {
       local lint = require 'lint'
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
+        c = { 'cppcheck' },
+        cpp = { 'cppcheck' },
+      }
+
+      lint.linters.cppcheck = {
+        cmd = 'cppcheck',
+        stdin = false,
+        args = {
+          '--enable=warning,style,performance,information',
+          '--language=c++',
+          '--std=c++23',
+          '--force',
+          '--template={file}:{line}:{column}: [{id}] {severity}: {message}',
+          '--quiet',
+          '--template=gcc',
+        },
+        stream = 'stderr',
+        ignore_exitcode = true,
+        parser = require('lint.parser').from_errorformat('%f:%l:%c: %t%*[^:]: %m', { source = 'cppcheck' }),
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,

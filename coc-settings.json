@@ -1,0 +1,11 @@
+{
+	"clangd.argument": [
+		"--clang-tidy",
+		"--clang-tidy-checks=bugprone-*,performance-*",
+		"--background-index",
+		"--all-scopes-completion",
+		"--pch-storage=memory",
+		"--pretty",
+		"--enable-config"
+	]
+}
