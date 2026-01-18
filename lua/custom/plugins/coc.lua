@@ -69,8 +69,9 @@ return {
       keyset('n', '<leader>rn', '<Plug>(coc-rename)', { silent = true })
 
       -- Formatting selected code
-      keyset('x', '<leader>cf', '<Plug>(coc-format-selected)', { silent = true })
-      keyset('n', '<leader>cf', '<Plug>(coc-format-selected)', { silent = true })
+      -- keyset('x', '<leader>cf', '<Plug>(coc-format-selected)', { silent = true })
+      -- keyset('n', '<leader>cf', '<Plug>(coc-format-selected)', { silent = true })
+      keyset('n', '<leader>cf', '<Cmd>Format<CR>', { silent = true })
 
       -- Setup formatexpr specified filetype(s)
       vim.api.nvim_create_autocmd('FileType', {

@@ -7,5 +7,6 @@
 		"--pch-storage=memory",
 		"--pretty",
 		"--enable-config"
-	]
+	],
+	"coc.preferences.formatOnSave": true
 }
